@@ -5,8 +5,11 @@ const errorHandler = require('./middleware/error');
 const routes = require('./routes');
 const pkg = require('./package.json');
 
+
 const { port, secret } = config;
-const app = express();
+const app = express();//inicializar express
+
+require('/.connected');
 
 app.set('config', config);
 app.set('pkg', pkg);
