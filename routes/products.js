@@ -1,3 +1,4 @@
+const { getProducts, postProducts, putProducts, deleteProducts, getProductsId } = require('../controller/products');
 const {
   requireAuth,
   requireAdmin,
@@ -5,20 +6,17 @@ const {
 
 module.exports = (app, nextMain) => {
 
-  app.get('/products', requireAuth, (req, resp, next) => {
-  });
+  app.get('/products', getProducts);
 
-  app.get('/products/:productId', requireAuth, (req, resp, next) => {
-  });
+  app.get('/products/:name', /*requireAuth,*/ getProductsId);
 
-  app.post('/products', requireAdmin, (req, resp, next) => {
-  });
+  app.post('/products', postProducts);
 
-  app.put('/products/:productId', requireAdmin, (req, resp, next) => {
-  });
+  app.put('/products/:name', putProducts);
+  // app.put('/products/:name', requireAdmin, putProducts, (req, resp, next) => {
+ // });
 
-  app.delete('/products/:productId', requireAdmin, (req, resp, next) => {
-  });
+  app.delete('/products/:id', deleteProducts);
 
   nextMain();
 };
