@@ -1,3 +1,4 @@
+console.log("esta saliendo el error de MIDDLEWARE ERROR");
 const httpErrors = {
   400: 'Bad request',
   401: 'Unauthorized',
@@ -5,7 +6,7 @@ const httpErrors = {
   404: 'Not found',
   500: 'Internal server error',
 };
-
+console.log("middleware error porqueeeeeeeeeeeeeeeeeeeeeeeeeeee");
 const isKnownHTTPErrorStatus = (num) => (
   typeof num === 'number' && Object.keys(httpErrors).indexOf(`${num}`) >= 0
 );

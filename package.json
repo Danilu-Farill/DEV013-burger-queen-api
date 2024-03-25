@@ -12,12 +12,14 @@
     "test:e2e": "jest --verbose --testPathPattern e2e --globalSetup ./e2e/globalSetup --globalTeardown ./e2e/globalTeardown --runInBand",
     "test:unit": "jest --verbose --testPathIgnorePatterns e2e",
     "tsc": "tsc",
+    "dev": "nodemon ./index.js",
     "test": "npm run test:e2e && npm run test:unit",
     "lint": "eslint .",
     "docs:generate": "jsdoc -c jsdoc.conf --readme README-docs.md",
     "docs:deploy": "rm -rf docs && npm run docs:generate && gh-pages -d docs"
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "@shelf/jest-mongodb": "^4.1.7",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.2",
@@ -39,6 +41,7 @@
     "jsdoc": "^3.6.6",
     "jsdoc-http-plugin": "^0.3.2",
     "node-fetch": "^3.1.0",
+    "nodemon": "^3.1.0",
     "tree-kill": "^1.2.2",
     "tslint": "^5.12.1",
     "typescript": "^3.3.3"

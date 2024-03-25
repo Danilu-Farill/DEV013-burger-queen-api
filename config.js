@@ -5,6 +5,19 @@ exports.adminEmail = process.env.ADMIN_EMAIL || 'admin@localhost';
 exports.adminPassword = process.env.ADMIN_PASSWORD || 'changeme';
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 Ejemplo de conexión usando MongoDB Node Driver
 npm install mongodb@6.5
