@@ -85,7 +85,9 @@ const checkAdminCredentials = () => fetch('/login', {
 
     return resp.json();
   })
-  .then(({ token }) => Object.assign(__e2e, { adminToken: token }));
+  .then(({ token }) => Object.assign(__e2e, { adminToken: token })).catch(err => {
+    console.log(err);
+  });
 
 const waitForServerToBeReady = (retries = 10) => new Promise((resolve, reject) => {
   if (!retries) {

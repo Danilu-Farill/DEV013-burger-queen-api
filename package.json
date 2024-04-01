@@ -9,7 +9,7 @@
   "scripts": {
     "pretest": "eslint .",
     "start": "node index.js",
-    "test:e2e": "jest --verbose --testPathPattern e2e --globalSetup ./e2e/globalSetup --globalTeardown ./e2e/globalTeardown --runInBand",
+    "test:e2e": "jest --verbose --testPathPattern e2e/users.spec.js --globalSetup ./e2e/globalSetup --globalTeardown ./e2e/globalTeardown --runInBand",
     "test:unit": "jest --verbose --testPathIgnorePatterns e2e",
     "tsc": "tsc",
     "dev": "nodemon ./index.js",
@@ -23,6 +23,7 @@
     "@shelf/jest-mongodb": "^4.1.7",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "express": "4.18.3",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "6.5",

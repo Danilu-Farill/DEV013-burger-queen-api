@@ -16,14 +16,65 @@ module.exports = (app, nextMain) => {
     const comparePassword = await bcrypt.compare(passwordPlain, hashPassword)
     return comparePassword;
   };
-  
+
+  app.post('/login', async (req, resp, next) => {
+    try {
+      const { password, email } = req.body;
+      const userCollection = await collectDataUser();
+       const user = await userCollection.findOne({email});
+       if(!user.email) {
+          return resp.status(400).send("email incorrecto");
+      };
+      const isValidPasword = await comparePassword(password, user.password);
+      if(!isValidPasword){
+          return resp.status(400).send("Contraseña incorrecta");
+      } else {
+        const { _id, role } = user;
+        const token = jwt.sign({role: role,  _id: _id}, secret);
+        return resp.status(200).json({token});
+      };
+  } catch (error) {
+    //resp.headers.text = error.message;
+    console.log("error 400 catch", error);
+    resp.status(400).send("Error no estas poniendo los campos requeridos")        
+  }
+    //next();
+    // TODO: Authenticate the user
+    // It is necessary to confirm if the email and password
+    // match a user in the database
+    // If they match, send an access token created with JWT
+//    next();
+  });
+  return nextMain();
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*
   app.post('/login', async (req, resp, next) => {
     // const { email, password } = req.body;
     // if (!email || !password) {
     //   return next(400);
-    try {
-      const userId = new ObjectId(req._id).toString();
-      // console.log("🚀 ~ app.post ~ userId:", userId);
+    try {//66018545c74cc651748a583f
+      //const uid = req.params.uid;
+      //const userId = new ObjectId(req.body.uid);
+      
+      //const userId = new ObjectId(req._id);
+      //console.log("🚀 ~ app.post ~ userId: AUTH ROUTES", uid);
       // if(!userId) {//VERIFICAR QUE EL ID EXISTA???
       //   return resp.status(401).send("No regitrado");
       // };
@@ -33,8 +84,6 @@ module.exports = (app, nextMain) => {
         return resp.status(404).send("No se encontro la colección");
       };
        const user = await userCollection.findOne({email});
-       console.log("🚀 ~ app.post ~ user AUTH ROUTES:", user);
-
        if(!user) {
         console.log("registro402 ngdygdtdtdtdfrdrdr");
           return resp.status(401).send("email incorrecto");
@@ -47,10 +96,12 @@ module.exports = (app, nextMain) => {
         console.log("registro403 ngdygdtdtdtdfrdrdr");
           return resp.status(401).send("No tienes acceso de admin");//lo puedo quitar
       }if (isValidPasword) {//si compare es true va a crear un token
-        //const token = jwt.sign({role: req.body.role,  _id: new ObjectId(req._id)}, "secret_key");
         //const token = jwt.sign({role: req.body.role,  userId}, "secret_key");
-        const token = jwt.sign({role: req.body.role,  userId}, secret);
-        console.log("🚀 ~ app.post auth routes  ~ token:", token);
+        // const {_id} = req.body;
+        const {_id} = user;
+        console.log("🚀 ~ app.post ~ userId: UID", uid);
+        const token = jwt.sign({role: req.body.role, _id}, secret);
+        console.log("🚀 ~ app.post auth routes  ~ token: TOKEN AUTH ROUTES", token);
         return resp.status(200).json(token);
       };
   } catch (error) {
@@ -68,4 +119,4 @@ module.exports = (app, nextMain) => {
 //FALTA EL ID, PERO TERMINADO
 //CORREGIR QUE SOLO SEA OBLIGATORIO DOS CAMPOS O NO?????
   return nextMain();
-};
+};*/

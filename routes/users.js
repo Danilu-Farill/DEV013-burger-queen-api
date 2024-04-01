@@ -70,15 +70,30 @@ if(adminUser.role = "admin"){
 
 module.exports = (app, next) => {
 
-  app.get('/users', requireAdmin, getUsers);
+  app.get('/users', requireAdmin, getUsers);//bien  SI ESTA AUTENTICADO Y ES ADMIN PUEDE ACCEDER A LOS ARCHIVOS
 
-  app.get('/users/:id', /*requireAuth,*/ getUsersId);
+  app.get('/users/:uid', requireAuth, getUsersId);
 
-  app.post('/register', /*requireAdmin,*/ postRegister);
+  app.post('/users', requireAdmin, postRegister);//bien SI ESTA AUTENTICADO Y ES ADMIN PUEDE ACCEDER A REGISTRAR
 
-  app.put('/users/:id',  putUsers);
+  app.put('/users/:uid', requireAuth,  putUsers);
 
-  app.delete('/users/:id', requireAuth, deleteUsers);
+  app.delete('/users/:uid', requireAuth, deleteUsers);
 
   initAdminUser(app, next);
 };
+
+
+
+//   app.get('/users/:uid', requireAuth, (req, resp) => {
+//   });
+
+//   app.post('/users', requireAdmin, (req, resp, next) => {
+//     // TODO: Implement the route to add new users
+//   });
+
+//   app.put('/users/:uid', requireAuth, (req, resp, next) => {
+//   });
+
+//   app.delete('/users/:uid', requireAuth, (req, resp, next) => {
+//   });

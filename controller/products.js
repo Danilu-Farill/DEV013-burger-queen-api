@@ -20,6 +20,11 @@ const collectionProducts =
 module.exports = {
     getProducts: async (req, resp, next) => {//hacer la petición
       try {
+       const { authorization } = req.headers;
+       console.log(authorization, "PRODUCTS");
+       if(!authorization) {
+        return resp.status(403).send("No autorizado");
+       }
       const db = await collectDataProducts();
       const findResult = await db.find({}).toArray();
       resp.status(200).send(findResult);
