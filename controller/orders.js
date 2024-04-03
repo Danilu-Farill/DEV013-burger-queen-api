@@ -11,7 +11,7 @@ async function collectDataProducts() {
   const db = await connect();
   return db.collection('products');
 }
-let nameOrders = //ESTRUCTURA DE EJEMPLO
+let nameOrders = 
   {
     "userId": 8888,
     "client": "Marina Díaz",
@@ -33,7 +33,7 @@ let nameOrders = //ESTRUCTURA DE EJEMPLO
   };
 
 module.exports = {
-    getOrders: async (req, resp, next) => {//hacer la petición
+    getOrders: async (req, resp, next) => {
       try{
       const order = await collectData();
       const findResult = await order.find().toArray();
@@ -43,7 +43,7 @@ module.exports = {
         resp.status(404).send("No se encontraron usuarios")
       }
     },
-    getOrderId: async (req, resp, next) => {//hacer la petición
+    getOrderId: async (req, resp, next) => {
       try {
         const orderId = req.params.orderId;
         if(!ObjectId.isValid(orderId)){
@@ -52,90 +52,27 @@ module.exports = {
         const reqId = new mongodb.ObjectId(orderId);
         const db = await collectData();
         const findResult = await db.findOne(reqId);//me devuelve el 1
-        // const findResult = await db.findOne({client: req.params.client});//cualquiera de los dos funciona
         console.log(findResult, "findResult");
         resp.status(200).send(findResult);
       } catch (error) {
-        console.log("🚀 ~ getOrderId: ~ error:", error)
         resp.status(404).send("usario no encontrado");        
       }
     },
     postOrders: async (req, resp, next) => {
       try {
-        // console.log("hola");
-        // const { name, image, type } = req.body;
-        // console.log("🚀 ~ postOrders: ~ name, image, type:", name, image, type)
         const db = await collectData();
-        // const dbProducts = await collectDataProducts();
-        //await model.findByIdAndUpdate(id, { $push: { 'storage': storageDataUpdateStorage } })//enivamos un nuevo objeto en el documento en base a la ruta storage
-
-        // console.log("🚀 ~ postOrders: ~ dbProducts:", dbProducts)
-        // switch (req.body.name) {
-        //   case null:
-        //     resp.status(400).send("Cliente y precio no indicado")
-        //     break;
-        //   default:
-        //     break;
-        // }
         const client = req.body?.client;
-        console.log("🚀 ~ postOrders: ~ client:", client)
         const price = req.body?.price;
         const promiseCollection = await db.insertOne(req.body);
-        //const promiseCollection = await db.insertOne(name, image, type, price);
-        console.log("🚀 ~ postOrders: ~ promiseCollection:", promiseCollection)
         
         if(!client || !price) {
           return resp.status(400).send("Cliente o Precio no indicado");
-       }
-        //else if(!resp){//aquí va la contraseña del token
-      //   resp.status(401).send("Cliente no autenticado")
-      //  }else if(resp !== roleAdmis) {
-      //   resp.status(403).send("No tienes acceso no eres administrador")
-      //}
+       };
         resp.status(200).send(promiseCollection);//también funciona, CUAL ES LA DIFERENCIA
       } catch (error) {
         return resp.status(422).send( "Usuario no posteado");
       }
 
-      // const body = req.body.nameOrders;
-      // const orders = new MongoOrders(connect());
-      // try {
-      //   const dataBase = orders.db();
-      //   const ordersData = dataBase.collection("orders");
-      //   const result = await ordersData.insertOne(nameOrders);
-      //   console.log("🚀 ~ postOrders: ~ result:", result)
-        // db.collection.insertOne(nameOrders);
-        // resp.send();
-        
-      // } catch (error) {
-        
-      // }
-      //resp.send(nameOrders);//aparece en postman pero no en la base de datos
-      // let orders = new Orders();
-      // orders.client = req.body.client;      
-      // orders.products = req.body.products;
-      // orders.products.product.price = req.body.products.product.price;
-      // orders.products.product.image = req.body.products.product.image;
-      // orders.products.product.type = req.body.products.product.type;
-      // orders.date = req.body.dateEntry;
-      // orders.save();
-
-      // try {
-      //   await orders.create(body);
-      // } catch (error) {
-      //   console.log("error del post", error);  
-      // }
-
-      // nameOrders.push({name: req.body.client});
-      // resp.json(nameOrders);
-
-
-
-      // const body = req.body;
-      // console.log(body);
-
-      
-      // resp.status(201).json(data);
     },
     putOrders: async (req, resp, next) => {
       try {
@@ -145,15 +82,6 @@ module.exports = {
         }    
         const client = new ObjectId(putId)
         const db = await collectData();
-        // let {client, name, price, type} = req.body//destructuración para obtener todo lo que mandamos por el body
-        // console.log("destructuración");
-        // const findResult = await db.updateOne({client}, {$set: id});
-        //console.log({$set: req.body}, "set: req.body");//esto si pone lo que actualizo
-        //console.log("client: req.params.client", {client: req.params.client});//AQUÍ LLEGA EL ID QUE PONGO
-        // const findResult = await db.findOne({client: req.params.client}, {$set: req.body});
-        // console.log("client: req.params.client", {_id: req.params});
-        //const findResult = await db.updateOne({_id: new ObjectId(req.params.id)}, {set: req.body});..
-
         const existingClient = await db.findOne({client});
         if(!existingClient) {
           console.log("put hdhh");
@@ -164,7 +92,6 @@ module.exports = {
       } catch (error) {
         resp.status(400).send("No se pudo actualizar la data");
       }
-      //findOneAndUpdate()
     },
     deleteOrders: async (req, resp, next) => {
       try{

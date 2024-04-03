@@ -19,7 +19,7 @@ const collectionProducts =
   };
 
 module.exports = {
-    getProducts: async (req, resp, next) => {//hacer la petición
+    getProducts: async (req, resp, next) => {
       try {
       const db = await collectDataProducts();
       const findResult = await db.find({}).toArray();
@@ -42,7 +42,7 @@ module.exports = {
         resp.status(500).send("Intenta otro, product no encontrado en la colección");
       }
     },
-    postProducts: async (req, resp, next) => {//hacer la petición
+    postProducts: async (req, resp, next) => {
       try {
         const { name, price, type} = req.body;
         const db = await collectDataProducts();
@@ -60,7 +60,7 @@ module.exports = {
         resp.status(500).send("Producto no guardado");
       }
     },
-    putProducts: async (req, resp, next) => {//CHECAR NO LO ESTA HACIENDO
+    putProducts: async (req, resp, next) => {
       try {
         const productId = req.params.productId;
         if(!ObjectId.isValid(productId)) {
@@ -79,21 +79,17 @@ module.exports = {
         resp.status(424).send("No se actualizo la data");
       }
     },
-    deleteProducts: async (req, resp, next) => {//hacer la petición
+    deleteProducts: async (req, resp, next) => {
       try {
         const id = req.params.productId;
         if(!ObjectId.isValid(id)) {
-          return resp.status(404).send("No se encuentra")
+          return resp.status(404).send("No se encuentra");
         };
 
         const bodyId = new ObjectId(id)
         const db = await collectDataProducts();
         const find = await db.findOne(bodyId);
-       
         const findResult = await db.deleteOne({_id: find});
-        // if(findResult.deletedCount === 0) {
-        //   return resp.status(404).send("No se elimino")
-        // }
         resp.status(200).send(find);
       } catch (error) {
         resp.status(424).send("Producto sin existencia");
