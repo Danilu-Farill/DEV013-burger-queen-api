@@ -35,10 +35,8 @@ let nameOrders = //ESTRUCTURA DE EJEMPLO
 module.exports = {
     getOrders: async (req, resp, next) => {//hacer la petición
       try{
-       // if() {}//FALTA ERROR 401 NO HAY TOKEN, NO AUTORIZADO
-      const data = await collectData();
-      
-      const findResult = await data.find({}).toArray();
+      const order = await collectData();
+      const findResult = await order.find().toArray();
       resp.status(200).send(findResult);
       }
       catch(err) {
@@ -46,10 +44,12 @@ module.exports = {
       }
     },
     getOrderId: async (req, resp, next) => {//hacer la petición
-      //let id = req.params.client;//
-      let reqId = new mongodb.ObjectId(req.params.id);
       try {
-        // if() {}//FALTA ERROR 401 NO HAY TOKEN, NO AUTORIZADO
+        const orderId = req.params.orderId;
+        if(!ObjectId.isValid(orderId)){
+          return resp.status(404).send("no encontrado")
+        }
+        const reqId = new mongodb.ObjectId(orderId);
         const db = await collectData();
         const findResult = await db.findOne(reqId);//me devuelve el 1
         // const findResult = await db.findOne({client: req.params.client});//cualquiera de los dos funciona
@@ -62,6 +62,9 @@ module.exports = {
     },
     postOrders: async (req, resp, next) => {
       try {
+        // console.log("hola");
+        // const { name, image, type } = req.body;
+        // console.log("🚀 ~ postOrders: ~ name, image, type:", name, image, type)
         const db = await collectData();
         // const dbProducts = await collectDataProducts();
         //await model.findByIdAndUpdate(id, { $push: { 'storage': storageDataUpdateStorage } })//enivamos un nuevo objeto en el documento en base a la ruta storage
@@ -78,18 +81,19 @@ module.exports = {
         console.log("🚀 ~ postOrders: ~ client:", client)
         const price = req.body?.price;
         const promiseCollection = await db.insertOne(req.body);
+        //const promiseCollection = await db.insertOne(name, image, type, price);
+        console.log("🚀 ~ postOrders: ~ promiseCollection:", promiseCollection)
         
         if(!client || !price) {
-          console.log("nada");
           return resp.status(400).send("Cliente o Precio no indicado");
-       } //else if(!resp){//aquí va la contraseña del token
+       }
+        //else if(!resp){//aquí va la contraseña del token
       //   resp.status(401).send("Cliente no autenticado")
       //  }else if(resp !== roleAdmis) {
       //   resp.status(403).send("No tienes acceso no eres administrador")
       //}
-        resp.status(201).send(promiseCollection);//también funciona, CUAL ES LA DIFERENCIA
+        resp.status(200).send(promiseCollection);//también funciona, CUAL ES LA DIFERENCIA
       } catch (error) {
-        console.log("error en el postOrders", error);
         return resp.status(422).send( "Usuario no posteado");
       }
 
@@ -135,8 +139,11 @@ module.exports = {
     },
     putOrders: async (req, resp, next) => {
       try {
-        const client = req.params.client;
-        //COMPROBAR ERROR 401 if there is no authentication header
+        const putId = req.params.orderId;
+        if(!ObjectId.isValid(putId)){
+          return resp.status(404).send("no encontrado")
+        }    
+        const client = new ObjectId(putId)
         const db = await collectData();
         // let {client, name, price, type} = req.body//destructuración para obtener todo lo que mandamos por el body
         // console.log("destructuración");
@@ -161,11 +168,13 @@ module.exports = {
     },
     deleteOrders: async (req, resp, next) => {
       try{
-      const db = await collectData();
-      //const findResult = await collection.remove({"_id":'65f7c8b3d33c7c31c3ca158a'});
-      //const findResult = await collection.deleteOne({"_id": ObjectId('65f7c8b3d33c7c31c3ca158a')});
-      let reqId = new mongodb.ObjectId(req.params.id);
-      const existingId = await db.findOne({_id: reqId});
+        const deleteId = req.params.orderId;
+        if(!ObjectId.isValid(deleteId)){
+          return resp.status(404).send("no encontrado")
+        }
+        const reqId = new ObjectId(deleteId);
+        const db = await collectData();
+        const existingId = await db.findOne({_id: reqId});
      //falta if 401,  
       if(!existingId) {//if(!req.params.id)
         return resp.status(404).send("La orden indicada no existe");

@@ -217,8 +217,7 @@ describe('DELETE /users/:uid', () => {
       .then((resp) => { expect(resp.status).toBe(200);
         return resp.json();
       })
-      .then(({ token }) => fetchWithAuth(token)(`/users/${credentials.email}`, {
-        method: 'DELETE',
+      .then(({ token }) => fetchWithAuth(token)(`/users/${credentials.email}`, { method: 'DELETE',
       }))
       .then((resp) => expect(resp.status).toBe(200))
       .then(() => fetchAsAdmin(`/users/${credentials.email}`))

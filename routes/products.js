@@ -6,17 +6,15 @@ const {
 
 module.exports = (app, nextMain) => {
 
-  app.get('/products', getProducts);
+  app.get('/products', requireAuth, getProducts);
 
-  app.get('/products/:name', /*requireAuth,*/ getProductsId);
+  app.get('/products/:productId', requireAuth, getProductsId);
 
-  app.post('/products', postProducts);
+  app.post('/products', requireAdmin, postProducts);
 
-  app.put('/products/:name', putProducts);
-  // app.put('/products/:name', requireAdmin, putProducts, (req, resp, next) => {
- // });
+  app.put('/products/:productId', requireAdmin, putProducts);
 
-  app.delete('/products/:id', deleteProducts);
+  app.delete('/products/:productId', requireAdmin, deleteProducts);
 
   nextMain();
 };

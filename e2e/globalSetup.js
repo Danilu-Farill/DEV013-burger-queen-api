@@ -20,7 +20,7 @@ const __e2e = {
   adminToken: null,
   testUserCredentials: {
     email: 'test@test.test',
-    password: '123456',
+    password: '12345678',
     role: 'chef',
   },
   testUserToken: null,

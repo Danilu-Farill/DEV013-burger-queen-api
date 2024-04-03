@@ -127,11 +127,7 @@ describe('GET /orders', () => {
 
   it('should get orders as user', () => (
     Promise.all([
-      fetchAsAdmin('/products', {
-        method: 'POST',
-        body: {
-          name: 'Test',
-          price: 10,
+      fetchAsAdmin('/products', { method: 'POST', body: { name: 'Test', price: 10,
           image: "https://github.com/Laboratoria/bootcamp/tree/main/projects/04-burger-queen-api/resources/images/water.jpg",
           type: "Lunch"
         },
@@ -145,11 +141,7 @@ describe('GET /orders', () => {
       })
       .then(([product, user]) => (
         Promise.all([
-          fetchAsTestUser('/orders', {
-            method: 'POST',
-            body: {
-              userId: user._id,
-              client: 'client',
+          fetchAsTestUser('/orders', { method: 'POST', body: { userId: user._id, client: 'client', 
               products: [
                 {
                   qty: 50,
@@ -159,11 +151,7 @@ describe('GET /orders', () => {
               status: "pending",              
             },
           }),
-          fetchAsAdmin('/orders', {
-            method: 'POST',
-            body: {
-              userId: user._id,
-              client: 'client',
+          fetchAsAdmin('/orders', { method: 'POST', body: { userId: user._id, client: 'client',
               products: [
                 {
                   qty: 25,

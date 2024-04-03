@@ -20,30 +20,35 @@ module.exports = (app, nextMain) => {
   app.post('/login', async (req, resp, next) => {
     try {
       const { password, email } = req.body;
+      if(!email || !password){
+        return resp.status(400).send("email o password incorrecto");
+       };
       const userCollection = await collectDataUser();
-       const user = await userCollection.findOne({email});
-       if(!user.email) {
-          return resp.status(400).send("email incorrecto");
+      const user = await userCollection.findOne({email});
+      //console.log("🚀 ~ app.post ~ user:", user)
+      if (!user) {
+        return resp.status(404).send("incorrecto")
+      }       
+      if(!user.password){
+        return resp.status(400).send("incorrecto");
+      }
+      if(!user.email) {
+        return resp.status(400).send("email incorrecto");
       };
-      const isValidPasword = await comparePassword(password, user.password);
+      
+      const isValidPasword = await comparePassword(password, user.password);     
       if(!isValidPasword){
-          return resp.status(400).send("Contraseña incorrecta");
-      } else {
-        const { _id, role } = user;
-        const token = jwt.sign({role: role,  _id: _id}, secret);
-        return resp.status(200).json({token});
-      };
+          return resp.status(400).send("false");
+      } 
+      
+      const { _id, role } = user;
+      const token = jwt.sign({role: role,  _id: _id, email: email}, secret);
+      return resp.status(200).json({token});
+      //return resp.status(200).json({user: {_id: id, role: role, email: email}});      
   } catch (error) {
-    //resp.headers.text = error.message;
-    console.log("error 400 catch", error);
-    resp.status(400).send("Error no estas poniendo los campos requeridos")        
+    resp.status(424).send("Error no estas poniendo los campos requeridos")        
   }
-    //next();
-    // TODO: Authenticate the user
-    // It is necessary to confirm if the email and password
-    // match a user in the database
-    // If they match, send an access token created with JWT
-//    next();
+
   });
   return nextMain();
 };
