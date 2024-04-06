@@ -24,30 +24,6 @@ app.use(authMiddleware(secret));
 //connectDB.connect().then(() => {});
 connect();
 
-// app.get('/orders', async (req, res) => {
-//   const db = await mongoConnect;
-//   const collection = db.collection('orders');
-//     const findResult = await collection.find({}).toArray();
-//     res.json(findResult);
-// });
-
-//app.post()
-
-// app.get('/products', async (req, res) => {
-//   const db = await mongoConnect;
-//   const collection = db.collection('products');
-//     const findResult = await collection.find({}).toArray();
-//     res.json(findResult);
-// });
-
-// app.get('/users', async (req, res) => {
-//   const db = await mongoConnect;
-//   const collection = db.collection('users');
-//     const findResult = await collection.find({}).toArray();
-//     res.json(findResult);
-// })
-
-
 // Registrar rutas
 routes(app, (err) => {
   if (err) {

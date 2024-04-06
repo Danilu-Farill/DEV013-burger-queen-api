@@ -1,5 +1,5 @@
-const auth = require('./auth');
-const users = require('./users');
+const auth = require('./auth');//mi login
+const users = require('./users');//métodos
 const products = require('./products');
 const orders = require('./orders');
 
